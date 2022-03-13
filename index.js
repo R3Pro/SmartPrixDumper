@@ -17,7 +17,7 @@ async function GetPageCount(iPage) {
         var desc = document.getElementsByClassName("description")[0];
         let count = desc.innerHTML.match(/of (.*?) M/i)[1];
         count = Math.round(count/20);
-        return count;
+        return 1;
     });
     return eval+2;
 }
@@ -110,6 +110,8 @@ function CreateDataBase($db){
             });
             stmt.finalize();  
     }
-    console.log("Done , All Data id Dumped")
+    console.log("Done , All Data is Dumped")
     db.close();
+
+    process.exit(0)
 })();
