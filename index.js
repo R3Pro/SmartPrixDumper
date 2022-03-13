@@ -11,15 +11,21 @@ var download = function(uri, filename, callback){
       request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
     });
   };
-  
-async function GetPageCount(iPage) {
+
+  async function GetPageCount(iPage) {
     const eval = await iPage.evaluate(() => {
+
+        function isFloat(n){ return Number(n) === n && n % 1 !== 0; }
+
         var desc = document.getElementsByClassName("description")[0];
-        let count = desc.innerHTML.match(/of (.*?) M/i)[1];
-        count = Math.round(count/20);
+        let count = desc.innerHTML.match(/of (.*?) M/i)[1]; // number of all mobiles
+        count = count/20 // 20 is number of mobiles on one page
+        if(isFloat(count)) {
+            count = Math.round(count) + 1;
+        }
         return count;
     });
-    return eval+2;
+    return eval;
 }
 
 
@@ -39,6 +45,7 @@ function CreateDataBase($db){
 }
 
 
+
 (async ()=>{
     
     let dir = "./image/"
@@ -54,8 +61,10 @@ function CreateDataBase($db){
     await page.goto(endpoint); // goto the link
 
     let countx = await GetPageCount(page); // get page count
+    countx + 1 // Add 1 because count in loop will start at 1
 
     console.log("Count : " + countx);
+    
     for(var i = 1 ;i < countx ;i++)
     {   
         //process.stdout.write("\n Page : "+ i + " > ");
