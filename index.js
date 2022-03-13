@@ -17,7 +17,7 @@ async function GetPageCount(iPage) {
         var desc = document.getElementsByClassName("description")[0];
         let count = desc.innerHTML.match(/of (.*?) M/i)[1];
         count = Math.round(count/20);
-        return 1;
+        return count;
     });
     return eval+2;
 }
